@@ -1,5 +1,6 @@
 import java.util.*;
 public class Game {
+    //thing
 	public static void main(String []args){
         Scanner in = new Scanner(System.in);
         int x = 8;
