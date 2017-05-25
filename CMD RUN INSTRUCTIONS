@@ -1,0 +1,11 @@
+GUIDE TO BUILDING ARTIFACT FOR CMD WINDOW
+-------------------------------------------
+1. build jar file in intellij
+  1. file > project structure > artifacts > add JAR > from modules and dependencies > select main class/extract to target jar 
+  > ok > apply > ok
+  2. build > build artifacts > "team5:jar" > build
+2. copy file path of jar file
+  1. under out > artifacts > team5_jar > team5.jar > right click and copy file path
+3. in a cmd window, type out:
+  java -jar <file path of jar file>
+4. profit
