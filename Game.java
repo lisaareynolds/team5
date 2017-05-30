@@ -1,8 +1,10 @@
+
 import java.util.*;
 public class Game {
     public static void main(String[]args){
         //variables that will be called later
         Scanner in = new Scanner(System.in);
+        //variables that will be translated to lower case
         String actOne = "";
         String act = "";
         String direcOne = "";
@@ -19,6 +21,8 @@ public class Game {
         String with = "";
         String targetOne = "";
         String target = "";
+        String a = "";
+        String b = "";
         int loop = 1;
         int x = 8;
         int y = 5;
@@ -29,9 +33,12 @@ public class Game {
         int key = 1;
         int crowbar = 1;
         int drink = 0;
+        int aid = 0;
 
         //Map location description and parameters
         String[][] loc = new String[10][11];
+        loc[1][2] = "wall";
+        loc[0][3] = "wall";
         loc[0][8] = "wall";
         loc[1][4] = "wall";
         loc[1][6] = "wall";
@@ -77,6 +84,10 @@ public class Game {
         loc[5][5] = "-Lobby-" + "\n" + "You are now within a lobby of some sort. You see corridors in each direction.";
         loc[4][5] = "-C HALL-" + "\n" + "You see nothing within this hall. You see an interesecting hallway further north, and the lobby is south.";
         loc[3][5] = "-C1 HALL-" + "\n" + "You are in the middle of an intersection. Corridors lead west and east, and C1 HALL is south of you.";
+        loc[3][4] = "-C1 HALL-" + "\n" + "You are further west of |C1 HALL|. You see a dark room north of you, a corridor leading east, and another room leading further west.";
+        loc[2][4] = "-Library-" + "\n" + "You are within the library. You see a corridor south of you, and a ladder leading up into a dark mysterious hole.";
+        loc[1][3] = "-Dark attic-" + "\n" + "You are above the library, and is now within a dark mysterious attic. The ladder leads down to the library.";
+        loc[3][6] = "-C1 HALL-" + "\n" + "You are further east of |C1 HALL|. You see a door north of you, a corridor leading west, and another room leading further east";
 
         //Adding potential items within the location square, or adding more flavor text
         String[][] item = new String[10][11];
@@ -86,6 +97,12 @@ public class Game {
         item[5][5] = "You see a crowbar lying on the floor in the middle of the lobby.";
         item[4][5] = "You only see dust surrounding the floor.";
         item[3][5] = "You see nothing around you but moss, and blacken tiles on the wall";
+        item[3][4] = "The carpet beneath your feet is covered in Kool Aid.";
+        item[2][4] = "You only see books scattered around the library. The books cannot be picked up, because you are disgusted with literature.";
+        a = "You see nothing but empty boxes, but you do see this sticky clear substance that is covering the walls.";
+        b = "The room is covered in darkness, but the sticky clear substance covering the wall glowed in the dark, spelling the word 'KEK'.";
+        item[1][3] = "";
+        item[3][6] = "You see a sign next to the door |Principal's Office|. Nothing but a weird odor covers this part of the hallway.";
 
         List<String> move = Arrays.asList("move", "walk", "go", "head", "run", "travel", "swagger");
         List<String> dir = Arrays.asList("north", "n", "south", "s", "east", "e", "west", "w");
@@ -93,6 +110,7 @@ public class Game {
         List<String> body = Arrays.asList("hands", "hand", "feet", "foot");
         List<String> use = Arrays.asList("use", "deploy", "hold");
         List<String> locker = Arrays.asList("lockers", "locker");
+        List<String> alt = Arrays.asList("up", "down");
         List<String> invent = new ArrayList<String>();
 
         //a loop that will always ask the user for input, and will function according to their input
@@ -106,7 +124,14 @@ public class Game {
             //movement checks
             if (dir.contains(act) == true){
                 if (act.contains("north") == true || act.contains("n") == true){
-                    if (loc[x-1][y] != "wall"){
+                    if (loc[x-1][y] != "wall" && x != 3 && y != 4){
+                        System.out.println("|Moved north|");
+                        x--;
+                    }
+                    else if(x == 3 && y == 4 && dark == 1){
+                        System.out.println("*You are too afraid of the dark*");
+                    }
+                    else if(x == 3 && y == 4 && dark == 0){
                         System.out.println("|Moved north|");
                         x--;
                     }
@@ -134,7 +159,7 @@ public class Game {
                 }
                 else if(act.contains("west") == true || act.contains("w") == true){
                     if (loc[x][y-1] != "wall"){
-                        System.out.println("Moved west");
+                        System.out.println("|Moved west|");
                         y--;
                     }
                     else{
@@ -153,7 +178,7 @@ public class Game {
                 direc = direcOne.toLowerCase();
                 System.out.println("");
                 if (direc.contains("north") == true || direc.contains("n") == true){
-                    if (loc[x-1][y] != "wall"){
+                    if (loc[x-1][y] != "wall" && x != 3 && y != 4){
                         if (act.contains("swagger") == true){
                             System.out.println("+50 style points |Moved north|");
                             x--;
@@ -162,6 +187,13 @@ public class Game {
                             System.out.println("|Moved north|");
                             x--;
                         }
+                    }
+                    else if(x == 3 && y == 4 && dark == 1){
+                        System.out.println("*You are too afraid of the dark*");
+                    }
+                    else if(x == 3 && y == 4 && dark == 0){
+                        System.out.println("|Moved north|");
+                        x--;
                     }
                     else{
                         System.out.println("-50 brain cells |Ran into a wall|");
@@ -212,6 +244,19 @@ public class Game {
                         System.out.println("-50 brain cells |Ran into a wall|");
                     }
                 }
+                else if (direc.contains("up") == true && x == 2 && y == 4){
+                    x = 1;
+                    y = 3;
+                    System.out.println("|You have moved up|");
+                }
+                else if(direc.contains("down") == true && x == 1 && y == 3){
+                    x = 2;
+                    y = 4;
+                    System.out.println("|You have moved down|");
+                }
+                else{
+                    System.out.println("*Not a direction*");
+                }
             }
 //-----------------------------------------------------------------------------------------------
             //allowing user to add items into inventory
@@ -239,7 +284,7 @@ public class Game {
                     crowbar = 0;
                 }
                 else{
-                    System.out.println("|Not an item|");
+                    System.out.println("*Not an item*");
                 }
             }
 //-----------------------------------------------------------------------------------------------
@@ -253,10 +298,16 @@ public class Game {
                     if (deploy.contains("flashlight") == true && dark == 1){
                         System.out.println("The shadows will fear you |Flashlight on|");
                         dark = 0;
+                        item[1][3] = a;
                     }
                     else if (deploy.contains("flashlight") == true && dark == 0){
                         System.out.println("You will fear the shadows |Flashlight off|");
                         dark = 1;
+                        item[1][3] = b;
+                        if (x == 2 && y == 4 && dark == 1){
+                            System.out.println("You ran out of the room out of the fear of the darkness." + "\n" + "|Moved south|");
+                            x++;
+                        }
                     }
                     else if (deploy.contains("crowbar") == true){
                         System.out.println("On: ");
@@ -269,10 +320,26 @@ public class Game {
                             lockers = 0;
                             keyOne = 1;
                         }
+                        else if(lockers == 0){
+                            System.out.println("*The lockers are already opened*");
+                        }
+                        else{
+                            System.out.println("*That is not the time nor place to use that here!*");
+                        }
                     }
                 }
+                else if(deploy.contains("ladder") == true && x == 2 && y == 4){
+                    System.out.println("|You have moved up|");
+                    x = 1;
+                    y = 3;
+                }
+                else if (deploy.contains("ladder") == true && x == 1 && y == 3){
+                    System.out.println("|You have moved down|");
+                    x = 2;
+                    y = 4;
+                }
                 else{
-                    System.out.println("|Do not have that item within inventory|");
+                    System.out.println("*Cannot use*");
                 }
             }
 //-----------------------------------------------------------------------------------------------
@@ -296,7 +363,7 @@ public class Game {
                     }
                 }
                 else{
-                    System.out.println("|Cannot read item that's not within inventory|");
+                    System.out.println("*Cannot read item that's not within inventory*");
                 }
             }
 //-----------------------------------------------------------------------------------------------
@@ -318,17 +385,18 @@ public class Game {
                         keyOne = 1;
                     }
                     else if (body.contains(with) == true && x == 7 && y == 5 && lockers == 1){
-                        System.out.println("|You the lack strength to open the lockers|");
+                        System.out.println("*You the lack strength to open the lockers*");
                     }
                     else{
-                        System.out.println("|You cannot open the lockers with that|");
+                        System.out.println("*You cannot open the lockers with that*");
                     }
                 }
                 else{
-                    System.out.println("|There is no lockers here|");
+                    System.out.println("*There is no lockers here*");
                 }
             }
 //-----------------------------------------------------------------------------------------------
+            //a drinking easter egg
             else if (act.contains("drink") == true && x == 6 && y == 5){
                 drink++;
                 switch (drink){
@@ -353,10 +421,39 @@ public class Game {
                 }
             }
 //-----------------------------------------------------------------------------------------------
-            else{
-                System.out.println("|Not an action|");
+            //up and down commands on the ladder within the library
+            else if(alt.contains(act) == true){
+                if (act.contains("up") == true && x == 2 && y == 4){
+                    x = 1;
+                    y = 3;
+                    System.out.println("|You have moved up|");
+                }
+                else if(act.contains("down") == true && x == 1 && y == 3){
+                    x = 2;
+                    y = 4;
+                    System.out.println("|You have moved down|");
+                }
+                else{
+                    System.out.println("*Cannot move up nor down*");
+                }
             }
-            System.out.println("\n" + "-----------------------------------------------------------------" + "\n");
+//-----------------------------------------------------------------------------------------------
+            else if(act.contains("oh no") == true){
+                aid++;
+                if (aid % 3 == 0){
+                    System.out.println("A GIANT KOOL AID MAN BURST INTO THE AREA YELLING 'OH YEAH!!!' and quickly dissappeared after handing you something." + "\n" + "*The Kool Aid man gave you a Kool Aid drink*");
+                    invent.add("kool aid");
+                }
+                else{
+                    System.out.println("Perhaps if you keep chanting these words, something will happen.");
+                }
+            }
+//-----------------------------------------------------------------------------------------------
+            //in case the input does not match a listed action
+            else{
+                System.out.println("*Not an action*");
+            }
+            System.out.println("\n" + "-----------------------------------------------------------------");
         }
     }
 }

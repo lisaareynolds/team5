@@ -1,7 +1,7 @@
 # team5
 Team 5: Text based adventure game
 -------------------------------------
-By: Alec Parent, Juan Delacruz, John Lipscomb, Dereck Miles
+By: Alec Parent, Juan Delacruz, John Lipscomb, Derek Miles
 
 GAME DESCRIPTION: Text based adventure game heavily influenced by Hillcrest's landscape features. 
 
